@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>toDolist</title>
+  <script src="https://unpkg.com/vue@3"></script>
+
+</head>
+<body>
+  <div id="root"></div>
+
+</body>
+<script>
+  Vue.createApp({
+    data(){
+      return{
+        inputValue : "",
+        toDoList : [],
+        IamList: ['hello', 'cathy', 'mandy']
+      }
+    },
+    methods:{
+      addList(){
+        this.toDoList.push(this.inputValue);
+        this.inputValue = "";
+      }
+    },
+    template:`
+      
+      <div>
+        <input v-model="inputValue" />
+        <button 
+          v-on:click="addList"
+          v-bind:title="inputValue"
+        >
+          增加 
+        </button>
+        <ul>
+          <li v-for="item of toDoList">{{item}}</li>
+        </ul>
+      </div>
+
+      <p>------not important------</p>
+      <ul>
+        <li v-for="item of IamList">{{item}}</li>
+      </ul>
+
+      <ul>
+        <li v-for="(item, index) of IamList">{{index}} {{item}}</li>
+      </ul>
+
+      
+    `
+    //item of "a list data" put into item
+    //v-model 指令在表單 <input>、<textarea> 及 <select> 元素上創建雙向數據綁定。
+    //它會根據控件類型自動選取正確的方法來更新元素
+    //title為html內建，滑鼠移到上面會顯示該值
+    //Vue中，透過v-bind這個指令，我們可以很輕鬆地對屬性、資料進行動態綁定
+    
+  }).mount('#root')
+
+</script>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lifeCycle1</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>  
+  <div id = "root"></div>
+  
+</body>
+
+<script>
+  //生命週期函數，在某一個時刻會自動執行的函數 像mounted即是
+  //又稱hook function
+  //https://book.vue.tw/CH1/1-7-lifecycle.html
+  const app = Vue.createApp({
+    data(){
+      return{
+        msg : "hi"
+      }
+    },
+    template: "<div> {{msg}} </div>"
+
+  })
+
+  app.mount('#root'); 
+</script>
+</html>

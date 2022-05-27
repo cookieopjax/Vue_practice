@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>toDolist</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+</body>
+<script>
+  const app = Vue.createApp({
+    data(){
+      return{
+        inputValue : "",
+        toDoList : [],
+      }
+    },
+    methods:{
+      addList(){
+        this.toDoList.push(this.inputValue);
+        this.inputValue = "";
+      }
+    },
+    template:`
+      <div>
+        <input v-model="inputValue" />
+        <button 
+          v-on:click="addList"
+          v-bind:title="inputValue"
+        >
+          增加 
+        </button>
+        <ul>
+          <to-do-item 
+            v-for="(item, index) of toDoList"
+            v-bind:toDoString="item"
+            v-bind:index="index"
+          />
+        </ul>
+      </div>
+    `
+    
+  });
+
+  //變數由上而下傳遞得方式 (單向)
+  //母元件 => v-bind:下層變數="上層變數"
+  //子元件 => props: [下層變數]
+
+  app.component('to-do-item', {
+    props: ['toDoString', 'index'],
+    template: '<li> {{index}} - {{toDoString}}</li>'
+  });
+
+  app.mount('#root');
+</script>
+</html>

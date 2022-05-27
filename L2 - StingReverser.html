@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String reverse</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+
+<body>
+  <div id='root'></div>
+
+</body>
+
+<script>
+  Vue.createApp({
+    data() {
+      return {
+        content: 'hi how are you',
+        isShow: true
+      }
+    },
+    methods: {
+      reverseString() {
+        this.content = this.content.split('').reverse().join('');
+      },
+      showOrHide() {
+        this.isShow = !this.isShow;
+      }
+    },
+    template: ` 
+      <div>
+        div
+        <h1 v-if="isShow"> {{content}} </h1>
+        <button v-on:click="reverseString"> 反轉字串 </button> 
+        <button v-on:click="showOrHide"> 顯示/隱藏 </button> 
+      </div>
+    `
+    //`為JavaScript ES6模版字符串
+    // v-on 用vue綁訂一個click的事件
+    // v-if 可依據指定變數隱藏顯示
+
+  }).mount('#root');
+
+</script>
+
+</html>

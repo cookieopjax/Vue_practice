@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>toDo-list</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+<body>
+  <div id="root"></div>
+</body>
+<script>
+
+  const app = Vue.createApp({
+    data(){
+      return{
+        toDoData: [],
+        input: "",
+        forUpdateInput: "",
+        isShow: [] //true:直接顯示字串，前方按鈕為修改, false:顯示輸入框，前方按鈕為確認
+      }
+    },
+    methods: {
+      addHandler(){
+        if(!this.input)return;
+        axios.post('http://localhost:3000/contents', {
+            content:this.input
+          }).then((res)=>{
+            console.log(res.data);
+            this.input = '';
+            this.toDoData.push(res.data);
+            this.isShow.push(true);
+        }).catch((err)=>{
+          console.log(err);
+        })
+      },
+
+      delHandler(index){
+        //index為畫面上顯示順序編號
+        //id為資料庫中的編號
+        let dataId = this.toDoData[index].id;
+        //JavaScript ES6 Template Literals
+        let url = `http://localhost:3000/contents/${dataId}`;
+
+        axios.delete(url).then((res)=>{
+          //arr.splice(要插入或刪除的索引位置, 要刪除的元素數量, 要插入的元素內容)
+          this.toDoData.splice(index, 1);
+          this.isShow.splice(index, 1);
+        })
+      },
+
+      updateHandler(index){
+        this.isShow[index] = true;
+        let dataId = this.toDoData[index].id;
+        //JavaScript ES6 Template Literals
+        let url = `http://localhost:3000/contents/${dataId}`;
+
+        axios.put(url,{
+          content:this.forUpdateInput
+        }).then((res)=>{
+
+          this.toDoData.splice(index, 1, {"index":index, "content":this.forUpdateInput});
+        })
+      }
+
+    },
+    mounted() { //api
+      axios.get('http://localhost:3000/contents').then((res)=>{
+          this.toDoData = res.data;
+          for(let i=0; i<this.toDoData.length;i++)
+            this.isShow.push(true)
+          console.log(this.isShow);
+          
+        }
+      ).catch((err)=>{
+        console.log(err);
+      })
+    },
+    template: `
+      <h1> ToDo List </h1>
+      <el-input v-model="input" placeholder="请输入内容"></el-input>
+      <el-input v-model="input"></el-input>
+      <button v-on:click="addHandler">新增</button>
+      <br/>
+      <ul>
+        <li v-for="(ThisList, index) of toDoData"> 
+          <button v-if="isShow[index]" @click="isShow[index] = false">修改</button>
+          <button v-else @click="updateHandler(index)">完成</button>
+          
+
+          <button @click="delHandler(index)">刪除</button>
+          
+          <span v-if="isShow[index]">{{ThisList.content}}</span>
+          <input v-else v-model="forUpdateInput">
+        </li>
+
+      </ul>
+    `
+  })
+
+  app.mount('#root'); 
+</script>
+</html>

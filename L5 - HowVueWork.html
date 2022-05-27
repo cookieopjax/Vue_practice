@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HowVueWork</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>  
+  <div id = "root"></div>
+  
+</body>
+
+<script>
+  //createApp()，創建一個vue應用，傳入的參數()，表示最外層的元件該如何顯示
+  //mvvm: model,view, viewModel -> viewModel is what "vue" do (connect view and model(data))
+  const app = Vue.createApp({
+    data(){
+      return{
+        msg : "hi"
+      }
+    },
+    template: "<div> {{msg}} </div>"
+
+  })
+
+  const vm = app.mount('#root'); //return the root component
+  //vm.$data can get the app data
+</script>
+</html>
